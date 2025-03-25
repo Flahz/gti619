@@ -37,11 +37,13 @@ class ClientController extends Controller
     public function store(Request $request)
     { $this->validate($request, [
         'first_name'    =>  'required',
-        'last_name'     =>  'required'
+        'last_name'     =>  'required',
+        'role'     =>  'required'
     ]);
-    $client = new client([
+    $client = new Client([
         'first_name'    =>  $request->get('first_name'),
-        'last_name'     =>  $request->get('last_name')
+        'last_name'     =>  $request->get('last_name'),
+        'role'     =>  $request->get('role')
     ]);
     $client->save();
     return redirect()->route('client.index')->with('success', 'Client ajouté');
@@ -78,17 +80,22 @@ class ClientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $this->validate($request, [
-            'first_name'    =>  'required',
-            'last_name'     =>  'required'
-        ]);
-        $client = client::find($id);
-        $client->first_name = $request->get('first_name');
-        $client->last_name = $request->get('last_name');
-        $client->save();
-        return redirect()->route('client.index')->with('success', 'Client modifié');
-    }
+{
+    $this->validate($request, [
+        'first_name' => 'required',
+        'last_name'  => 'required',
+        'role'       => 'required'
+    ]);
+
+    $client = Client::find($id);
+    $client->first_name = $request->get('first_name');
+    $client->last_name  = $request->get('last_name');
+    $client->role       = $request->get('role');
+    $client->save();
+
+    return redirect()->route('client.index')->with('success', 'Client modifié');
+}
+
 
     /**
      * Remove the specified resource from storage.

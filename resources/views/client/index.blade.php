@@ -21,6 +21,7 @@
    <tr>
     <th>First Name</th>
     <th>Last Name</th>
+    <th>Role</th>
     <th>Edit</th>
     <th>Delete</th>
    </tr>
@@ -28,13 +29,23 @@
    <tr>
     <td>{{$row['first_name']}}</td>
     <td>{{$row['last_name']}}</td>
-    <td><a href="{{route('client.edit',['id'=> $row['id']])}}" class="btn btn-warning">Edit</a></td>
     <td>
-     <form method="post" class="delete_form" action="{{route('client.destroy',['id'=> $row['id']])}}">
-      {{csrf_field()}}
-      <input type="hidden" name="_method" value="DELETE" />
-      <button type="submit" class="btn btn-danger">Delete</button>
-     </form>
+    @if($row['role'] == 1)
+        Client d’affaire
+    @elseif($row['role'] == 2)
+        Client résidentiel
+    @else
+        Inconnu
+    @endif
+</td>
+    <td><a href="{{ route('client.edit', $row['id']) }}" class="btn btn-warning">Edit</a></td>
+
+    <td>
+    <form method="post" class="delete_form" action="{{ route('client.destroy', $row['id']) }}">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
     </td>
    </tr>
    @endforeach
